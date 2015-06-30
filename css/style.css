@@ -1,0 +1,14 @@
+body {
+  width: 500px;
+  height: 400px;
+}
+
+.wrapper {
+  height: 430px;
+  margin-top: 0px;
+  top: 0px;
+}
+
+.container {
+  padding: 20px 0;
+}

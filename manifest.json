@@ -1,0 +1,13 @@
+{
+  "manifest_version": 2,
+  "name": "Chrome Crash Plugin",
+  "description": "Chrome extension to post web page content into a meteor site",
+  "version": "0.1",
+  "browser_action": {
+   "default_icon": "icon.png",
+   "default_popup": "popup.html"
+  },
+  "permissions": [
+    "activeTab"
+  ]
+}
