@@ -1,5 +1,5 @@
 var chromeCrashApp = angular.module('chromeCrashApp', [ 'ngRoute' ]);
-chromeCrashApp.appTitle = 'Meteor Analyzer';
+chromeCrashApp.appTitle = 'Meteor Rest Analyzer';
 chromeCrashApp.storeKey = 'meteorData';
 
 chromeCrashApp.value('$sharedData', { setting: null, user: null });
@@ -9,7 +9,10 @@ chromeCrashApp.controller('MainController', ['$scope', function($scope) {
 }]);
 
 chromeCrashApp.controller('LoginController',
-  ['$scope', '$http', '$location', '$sharedData',  window.ChromeCrash.LoginController]);
+  ['$scope', '$http', '$location', '$sharedData', ChromeCrash.LoginController]);
 
 chromeCrashApp.controller('SettingsController',
-  ['$scope', '$location', '$sharedData', window.ChromeCrash.SettingsController]);
+  ['$scope', '$location', '$sharedData', ChromeCrash.SettingsController]);
+
+chromeCrashApp.controller('WebhookController',
+  ['$scope', '$http', '$location', '$sharedData', ChromeCrash.WebhookController]);

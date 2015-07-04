@@ -12,9 +12,13 @@ SettingsController.prototype._onLoadSettings = function(setting) {
 };
 
 SettingsController.prototype._initSettings = function () {
-  this.setting.tokenName = 'authToken';
-  this.setting.usernameParam = 'username';
+  this.setting.authTokenName = 'X-Auth-Token';
+  this.setting.userIdName = 'X-User-Id';
+  this.setting.authTokenPath = '$.data.authToken';
+  this.setting.userIdPath = '$.data.userId';
+  this.setting.usernameParam = 'user';
   this.setting.passwordParam = 'password';
+  this.setting.webhookParam = 'content';
 };
 
 SettingsController.prototype.save = function (setting) {
