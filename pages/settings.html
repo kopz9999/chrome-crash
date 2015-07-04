@@ -1,0 +1,52 @@
+<div class="container">
+  <form class="form-horizontal form-signin" name='settingsForm' role="form">
+    <div class="form-group" ng-class="{ 'has-error': !settingsForm.meteorLink.$valid }">
+      <label class="control-label col-sm-2" for="meteorLink">Meteor URL:</label>
+      <div class="col-sm-10 inline-control">
+        <input type="url" placeholder='http://example.com' name='meteorLink' ng-model='setting.meteorLink' required class="form-control">
+        <p ng-show='settingsForm.meteorLink.$error.required' class="help-block">Required</p>
+      </div>
+    </div>
+    <div class="form-group" ng-class="{ 'has-error': !settingsForm.tokenName.$valid }">
+      <label class="control-label col-sm-2" for="tokenName">Token Header Name:</label>
+      <div class="col-sm-10 inline-control">
+        <input type="text" name='tokenName' ng-model='setting.tokenName' class="form-control" required>
+        <p ng-show='settingsForm.tokenName.$error.required' class="help-block">Required</p>
+      </div>
+    </div>
+    <div class="form-group" ng-class="{ 'has-error': !settingsForm.tokenName.$valid }">
+      <label class="control-label col-sm-2" for="tokenName">Token Header Name:</label>
+      <div class="col-sm-10 inline-control">
+        <input type="text" name='userIdName' ng-model='setting.tokenName' class="form-control" required>
+        <p ng-show='settingsForm.tokenName.$error.required' class="help-block">Required</p>
+      </div>
+    </div>
+    <div class="form-group" ng-class="{ 'has-error': !settingsForm.usernameParam.$valid }">
+      <label class="control-label col-sm-2" for="usernameParam">Username Param:</label>
+      <div class="col-sm-10 inline-control">
+        <input type="text" name='usernameParam' ng-model='setting.usernameParam' class="form-control" required>
+        <p ng-show='settingsForm.usernameParam.$error.required' class="help-block">Required</p>
+      </div>
+    </div>
+    <div class="form-group" ng-class="{ 'has-error': !settingsForm.passwordParam.$valid }">
+      <label class="control-label col-sm-2" for="passwordParam">Password Param:</label>
+      <div class="col-sm-10 inline-control">
+        <input type="text" name='passwordParam' ng-model='setting.passwordParam' class="form-control" required>
+        <p ng-show='settingsForm.passwordParam.$error.required' class="help-block">Required</p>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-10">
+        <div class="checkbox">
+          <label><input ng-model='setting.rememberCredentials' type="checkbox">Remember Credentials</label>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-10">
+        <button type="submit" ng-click="save(setting)" class="btn btn-lg btn-primary btn-block">Save</button>
+        <button ng-click="switchToLogin(setting)" class="btn btn-default btn-lg btn-block">Login</button>
+      </div>
+    </div>
+  </form>
+</div>
