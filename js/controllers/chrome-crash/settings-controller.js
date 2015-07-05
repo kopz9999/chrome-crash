@@ -1,48 +1,52 @@
 var SettingsController = function( $scope, $location, $sharedData ) {
-  this.setting = {};
   this._location = $location;
-  ChromeCrash.SettingsController.__super__.constructor.call(this, $scope, $sharedData);
+  this._initBase($scope, $sharedData);
 };
 
 extend(SettingsController, ChromeCrash.BaseController);
 
-SettingsController.prototype._onLoadSettings = function(setting) {
-  if ( setting === undefined ) this._initSettings();
-  else this.setting = setting;
+SettingsController.prototype._initScope = function () {
+  var _self = this;
+  this._scope.setting = {};
+  this._scope.save = function( setting ){
+    _self.save(setting);
+  };
+  this._scope.back = function( setting ){
+    _self.back(setting);
+  };
 };
 
 SettingsController.prototype._initSettings = function () {
-  this.setting.authTokenName = 'X-Auth-Token';
-  this.setting.userIdName = 'X-User-Id';
-  this.setting.authTokenPath = '$.data.authToken';
-  this.setting.userIdPath = '$.data.userId';
-  this.setting.usernameParam = 'user';
-  this.setting.passwordParam = 'password';
-  this.setting.webhookParam = 'content';
+  this._scope.setting.authTokenName = 'X-Auth-Token';
+  this._scope.setting.userIdName = 'X-User-Id';
+  this._scope.setting.authTokenPath = '$.data.authToken';
+  this._scope.setting.userIdPath = '$.data.userId';
+  this._scope.setting.usernameParam = 'user';
+  this._scope.setting.passwordParam = 'password';
+  this._scope.setting.webhookParam = 'content';
 };
 
 SettingsController.prototype.save = function (setting) {
   if ( !this._scope.settingsForm.$valid ) {
-    this.displayFormErrorMessage();
+    this._displayFormErrorMessage();
     return;
   } else {
     this._sharedData.setting = setting;
     this._saveState();
     this._displaySuccessMessage();
-    this._location.path( '/' );
   }
 };
 
-SettingsController.prototype.switchToLogin = function (setting) {
+SettingsController.prototype.back = function (setting) {
   if ( this._sharedData.setting == null ) {
     this.save( setting );
   } else {
-    this._location.path( '/' );
+    window.close();
   }
 };
 
-SettingsController.prototype._displaySuccessMessage = function (setting) {
-  this.notifications.push( 'Settings saved' );
+SettingsController.prototype._displaySuccessMessage = function () {
+  this._addNotification( 'Settings saved' );
 };
 
 SettingsController.prototype._onLoadSettingsFailure = function () {
@@ -50,7 +54,7 @@ SettingsController.prototype._onLoadSettingsFailure = function () {
 };
 
 SettingsController.prototype._onLoadSettingsSuccess = function(){
-  angular.extend(this.setting, this._sharedData.setting);
+  angular.extend(this._scope.setting, this._sharedData.setting);
 };
 
 ChromeCrash.SettingsController = SettingsController;

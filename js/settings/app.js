@@ -13,21 +13,8 @@ chromeCrashApp.value('$sharedData',{
 chromeCrashApp.controller('MainController', ['$scope', '$sharedData',
   ChromeCrash.MainController]);
 
-// Controllers
-chromeCrashApp.controller('LoginController',
-  ['$scope', '$http', '$location', '$sharedData',
-    ChromeCrash.LoginController]);
-
 chromeCrashApp.controller('SettingsController',
   ['$scope', '$location', '$sharedData', ChromeCrash.SettingsController]);
-
-chromeCrashApp.controller('AuthTokenController',
-  ['$scope', '$location', '$sharedData',
-    ChromeCrash.AuthTokenController]);
-
-chromeCrashApp.controller('WebhookController',
-  ['$scope', '$http', '$location', '$sharedData',
-    ChromeCrash.WebhookController]);
 
 // Directives
 chromeCrashApp.directive('crashNotifications',

@@ -4,15 +4,23 @@ var WebhookController = function( $scope, $http, $location, $sharedData ) {
   this._attemptsLimit = 1;
   this._setting = null;
   this._tab = null;
-  ChromeCrash.WebhookController.__super__.constructor.call(this, $scope,
-    $location, $sharedData);
-  this._scope.loading = true;
-  this._scope.success = false;
+  this._initBase($scope, $location, $sharedData);
 };
+
 // Super class
 extend(WebhookController, ChromeCrash.AuthTokenController);
 // Concerns
 extend(WebhookController.prototype, ChromeCrash.Authenticable);
+
+WebhookController.prototype._initScope = function () {
+  var _self = this;
+  this._scope.loading = true;
+  this._scope.success = false;
+  ChromeCrash.WebhookController.__super__._initScope.call(this);
+  this._scope.processTab = function() {
+    _self.processTab();
+  };
+};
 
 WebhookController.prototype.processTab = function () {
   var _self = this;
@@ -36,6 +44,7 @@ WebhookController.prototype._analizeCurrentContent = function (domContent) {
     headers: this._sharedData.authTokenHeaders,
     data: postParams
   };
+  this._scope.loading = true;
   this._http(req).
     success(function(data, status, headers, config) {
       _self._scope.loading = false;
@@ -51,16 +60,12 @@ WebhookController.prototype._onRequestSuccess = function () {
 };
 
 WebhookController.prototype._processError = function (status) {
-  if (status < 500 && status >= 400) {
-    if ( this._setting.rememberCredentials ) {
-      if ( this._attempts >= this._attemptsLimit ) {
-        this._onRequestError( status );
-      } else {
-        // Start renew token process
-        this._attemptLogin();
-      }
-    } else {
+  if ( this._setting.rememberCredentials ) {
+    if ( this._attempts >= this._attemptsLimit ) {
       this._onRequestError( status );
+    } else {
+      // Start renew token process
+      this._attemptLogin();
     }
   } else {
     this._onRequestError( status );
@@ -76,14 +81,15 @@ WebhookController.prototype._onRequestError = function (status) {
 WebhookController.prototype._attemptLogin = function () {
   var _self = this;
   ++this._attempts;
-  this._http.post( this._setting.loginResource, this.getCredentialParams()).
-    success(function(data, status, headers, config) {
-      _self._renewToken( data );
-    }).
-    error(function(data, status, headers, config) {
-      _self._scope.loading = false;
-      _self._processError( status );
-    });
+  this._http.post( this._setting.loginResource,
+    this.getCredentialParams(this._sharedData.user)).
+      success(function(data, status, headers, config) {
+        _self._renewToken( data );
+      }).
+      error(function(data, status, headers, config) {
+        _self._scope.loading = false;
+        _self._processError( status );
+      });
 };
 
 WebhookController.prototype._renewToken = function(data){
@@ -91,12 +97,12 @@ WebhookController.prototype._renewToken = function(data){
   if ( Object.keys(authTokenHeaders).length > 0 ) {
     this._sharedData.authTokenHeaders = authTokenHeaders;
     this._saveState();
-    this.notifications.push( "Token Renewed" );
+    this._addNotification( "Token Renewed" );
     this.processTab();
   } else {
     this._scope.loading = false;
     this._scope.success = false;
-    this.displayErrorMessage("Could not read auth token");
+    this._addNotification("Could not read auth token");
   }
 };
 

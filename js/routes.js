@@ -11,8 +11,4 @@ chromeCrashApp.config(function($routeProvider) {
     templateUrl : 'pages/webhook.html',
     controller  : 'WebhookController'
   });
-  $routeProvider.when('/settings', {
-    templateUrl : 'pages/settings.html',
-    controller  : 'SettingsController'
-  });
 });

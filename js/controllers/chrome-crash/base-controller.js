@@ -1,9 +1,4 @@
-var BaseController = function( $scope, $sharedData ) {
-  this.notifications = [];
-  this._scope = $scope;
-  this._sharedData = $sharedData;
-  this._bindScope();
-  this._loadSettings();
+var BaseController = function() {
 };
 
 BaseController.storageKeys = {
@@ -11,10 +6,23 @@ BaseController.storageKeys = {
   user: 'user'
 };
 
+BaseController.prototype._initBase = function ($scope, $sharedData) {
+  this._scope = $scope;
+  this._scope.notifications = [];
+  this._sharedData = $sharedData;
+  this._initScope();
+  this._loadSettings();
+};
+
+// Force to initialize Scope
+BaseController.prototype._initScope = function () {
+  throw '_bindScope not implemented';
+};
+
 BaseController.prototype._loadSettings = function () {
   var _self = this;
   if ( this._sharedData.setting == null ) {
-    chrome.storage.sync.get(chromeCrashApp.storeKey, function(obj){
+    chrome.storage.sync.get(this._sharedData.appData.storeKey, function(obj){
       _self._readStorage( obj );
     });
   } else {
@@ -24,13 +32,13 @@ BaseController.prototype._loadSettings = function () {
 
 BaseController.prototype._onRequestError = function (status) {
   if ( status < 600 && status >= 500 ){
-    this.displayErrorMessage('Server side error');
+    this._addNotification('Server side error');
   } else if (status < 500 && status >= 400) {
     if (status == 401) {
-      this.displayErrorMessage('Unauthorized error.'+
+      this._addNotification('Unauthorized error.'+
         ' Credentials are invalid');
-    } else this.displayErrorMessage('Client side occurred');
-  } else this.displayErrorMessage('Unknown error occurred');
+    } else this._addNotification('Client side occurred');
+  } else this._addNotification('Unknown error occurred');
 };
 
 BaseController.prototype._saveState = function () {
@@ -39,12 +47,12 @@ BaseController.prototype._saveState = function () {
 
 BaseController.prototype._getStorableData = function () {
   var saveSetting = {};
-  saveSetting[chromeCrashApp.storeKey] = this._sharedData;
+  saveSetting[this._sharedData.appData.storeKey] = this._sharedData;
   return saveSetting;
 };
 
 BaseController.prototype._readStorage = function (storage) {
-  var meteorStorage = storage[ chromeCrashApp.storeKey ] || {};
+  var meteorStorage = storage[ this._sharedData.appData.storeKey ] || {};
   var setting = meteorStorage[ BaseController.storageKeys.setting ];
   if (setting === undefined ) {
     this._onLoadSettingsFailure();
@@ -54,22 +62,12 @@ BaseController.prototype._readStorage = function (storage) {
   }
 };
 
-BaseController.prototype._bindScope = function () {
-  var char = null;
-  for (k in this) {
-    char = k.charAt(0);
-    if ( char != '_' && char != 'constructor' ) {
-      this._scope[k] = angular.bind( this, this[k] );
-    }
-  }
+BaseController.prototype._displayFormErrorMessage = function () {
+  this._scope.notifications.push( 'Please fill required fields' );
 };
 
-BaseController.prototype.displayFormErrorMessage = function () {
-  this.notifications.push( 'Please fill required fields' );
-};
-
-BaseController.prototype.displayErrorMessage = function (error) {
-  this.notifications.push( error );
+BaseController.prototype._addNotification = function (error) {
+  this._scope.notifications.push( error );
 };
 
 // Callbacks

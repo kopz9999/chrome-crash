@@ -1,6 +1,8 @@
 body {
   width: 600px;
+  /*
   min-height: 235px;
+  */
   padding-top: 10px;
   padding-bottom: 10px;
   background-color: #eee;
@@ -25,28 +27,6 @@ body {
 
 .inline-control input {
   width: 300px;
-}
-
-.settings-form label input[type=checkbox]{
-  margin-top: 0px;
-}
-
-.settings-form .form-group button{
-  font-size: 14px;
-}
-
-.settings-form, .settings-form input {
-  font-size: 12px;
-  line-height: 1.2;
-}
-.settings-form .control-label{
-  min-width: 195px;
-  vertical-align: top;
-  margin-top: 12px;
-}
-
-.settings-form .form-group{
-  margin-bottom: 10px;
 }
 
 .form-group.has-error{

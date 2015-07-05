@@ -10,7 +10,7 @@ CrashNotifications.prototype.onModelUpdate = function(){
   if ( this.notifications.length > 0 ) {
     message = this.notifications.pop();
     $.gritter.add({
-      title: chromeCrashApp.appTitle,
+      title: 'Chrome Crash',
       text: message
     });
   }

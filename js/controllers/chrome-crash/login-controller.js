@@ -1,13 +1,10 @@
 var LoginController = function( $scope, $http, $location, $sharedData ) {
-  this.loading = false;
   this._location = $location;
   this._http = $http;
-  this.user = {};
   this._setting = null;
   this._currentUser = null;
   this._loadedSettings = false;
-  ChromeCrash.LoginController.__super__.constructor.call(this, $scope,
-    $sharedData);
+  this._initBase($scope, $sharedData);
 };
 
 // SuperClass
@@ -15,10 +12,22 @@ extend(LoginController, ChromeCrash.BaseController);
 // Concerns
 extend(LoginController.prototype, ChromeCrash.Authenticable);
 
+LoginController.prototype._initScope = function () {
+  var _self = this;
+  this._scope.user = {};
+  this._scope.loading = false;
+  this._scope.authenticate = function( user ){
+    _self.authenticate(user);
+  };
+  this._scope.showSettings = function(){
+    _self.showSettings();
+  };
+};
+
 LoginController.prototype.authenticate = function (user) {
   if ( this._loadedSettings ) {
     if ( !this._scope.usersForm.$valid ) {
-      this.displayFormErrorMessage();
+      this._displayFormErrorMessage();
       return;
     } else {
       this._currentUser = user;
@@ -26,22 +35,23 @@ LoginController.prototype.authenticate = function (user) {
       this._doRequest();
     }
   } else {
-    this.displayErrorMessage('Settings not loaded');
+    this._addNotification('Settings not loaded');
   }
 };
 
 LoginController.prototype._doRequest = function () {
   var _self = this;
   this._scope.loading = true;
-  this._http.post( this._setting.loginResource, this.getCredentialParams()).
-    success(function(data, status, headers, config) {
-      _self._scope.loading = false;
-      _self._onRequestSuccess( data );
-    }).
-    error(function(data, status, headers, config) {
-      _self._scope.loading = false;
-      _self._onRequestError( status );
-    });
+  this._http.post( this._setting.loginResource,
+    this.getCredentialParams(this._currentUser)).
+      success(function(data, status, headers, config) {
+        _self._scope.loading = false;
+        _self._onRequestSuccess( data );
+      }).
+      error(function(data, status, headers, config) {
+        _self._scope.loading = false;
+        _self._onRequestError( status );
+      });
 };
 
 LoginController.prototype._onRequestSuccess = function( data ){
@@ -50,7 +60,7 @@ LoginController.prototype._onRequestSuccess = function( data ){
     this._sharedData.authTokenHeaders = authTokenHeaders;
     this._saveState();
     this._location.path("/land");
-  } else this.displayErrorMessage("Could not read auth token");
+  } else this._addNotification("Could not read auth token");
 };
 
 LoginController.prototype._saveCredentials = function () {
@@ -60,14 +70,14 @@ LoginController.prototype._saveCredentials = function () {
 };
 
 LoginController.prototype._displaySaveCredentialsSuccessMessage = function () {
-  this.notifications.push( 'Credentials saved' );
+  this._addNotification( 'Credentials saved' );
 };
 
 LoginController.prototype._onLoadSettingsSuccess = function() {
   this._loadedSettings = true;
   this._setting = this._sharedData.setting;
   if (this._sharedData.setting.rememberCredentials) {
-    angular.extend( this.user, this._sharedData.user );
+    angular.extend( this._scope.user, this._sharedData.user );
   }
   // You are already logged in
   if ( this._sharedData.authTokenHeaders != null ) {
@@ -76,7 +86,12 @@ LoginController.prototype._onLoadSettingsSuccess = function() {
 };
 
 LoginController.prototype._onLoadSettingsFailure = function() {
-  this._location.path('/settings');
+  this.showSettings();
+};
+
+LoginController.prototype.showSettings = function() {
+  var settingsUrl = chrome.extension.getURL('settings.html');
+  chrome.tabs.create({'url': settingsUrl});
 };
 
 ChromeCrash.LoginController = LoginController;

@@ -1,10 +1,10 @@
 // Authenticable
 var Authenticable = {};
-Authenticable.getCredentialParams = function () {
+Authenticable.getCredentialParams = function (user) {
   var postParams = {};
   var setting = this._sharedData.setting;
-  postParams[ setting.usernameParam ] = this._sharedData.user.username;
-  postParams[ setting.passwordParam ] = this._sharedData.user.password;
+  postParams[ setting.usernameParam ] = user.username;
+  postParams[ setting.passwordParam ] = user.password;
   return postParams;
 };
 Authenticable.getAuthTokenHeaders = function(data) {

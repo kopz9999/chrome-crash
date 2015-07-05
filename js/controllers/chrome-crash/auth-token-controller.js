@@ -1,14 +1,26 @@
-var AuthTokenController = function( $scope, $location, $sharedData ) {
-  this._location = $location;
-  ChromeCrash.AuthTokenController.__super__.constructor.call(this, $scope,
-    $sharedData);
+var AuthTokenController = function($scope, $location, $sharedData) {
+  this._initBase($scope, $location, $sharedData);
 };
 
 extend(AuthTokenController, ChromeCrash.BaseController);
 
+AuthTokenController.prototype._initBase = function ($scope, $location,
+                                                        $sharedData) {
+  this._location = $location;
+  ChromeCrash.AuthTokenController.__super__._initBase.call(this, $scope,
+    $sharedData);
+};
+
+AuthTokenController.prototype._initScope = function () {
+  var _self = this;
+  this._scope.logout = function(){
+    _self.logout();
+  };
+};
+
 AuthTokenController.prototype.logout = function () {
   this._sharedData.authTokenHeaders = null;
-  this.notifications.push( "Token has been dropped" );
+  this._addNotification( "Token has been dropped" );
   this._saveState();
   this._redirectToLogin();
 };
