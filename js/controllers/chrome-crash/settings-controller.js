@@ -40,6 +40,9 @@ SettingsController.prototype.save = function (setting) {
 SettingsController.prototype.back = function (setting) {
   if ( this._sharedData.setting == null ) {
     this.save( setting );
+    setTimeout(function(){
+      window.close();
+    }, 1000);
   } else {
     window.close();
   }
