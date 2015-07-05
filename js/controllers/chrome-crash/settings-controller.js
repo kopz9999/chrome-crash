@@ -22,16 +22,13 @@ SettingsController.prototype._initSettings = function () {
 };
 
 SettingsController.prototype.save = function (setting) {
-  var _self = null;
   if ( !this._scope.settingsForm.$valid ) {
     this.displayFormErrorMessage();
     return;
   } else {
-    _self = this;
     this._sharedData.setting = setting;
-    chrome.storage.sync.set(this.getStorableData(), function(){
-      _self.displaySuccessMessage();
-    });
+    this._saveState();
+    this._displaySuccessMessage();
     this._location.path( '/' );
   }
 };
@@ -44,11 +41,8 @@ SettingsController.prototype.switchToLogin = function (setting) {
   }
 };
 
-SettingsController.prototype.displaySuccessMessage = function (setting) {
-  $.gritter.add({
-    title: chromeCrashApp.appTitle,
-    text: 'Settings saved'
-  });
+SettingsController.prototype._displaySuccessMessage = function (setting) {
+  this.notifications.push( 'Settings saved' );
 };
 
 SettingsController.prototype._onLoadSettingsFailure = function () {

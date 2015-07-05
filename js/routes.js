@@ -4,7 +4,8 @@ chromeCrashApp.config(function($routeProvider) {
     controller  : 'LoginController'
   });
   $routeProvider.when('/land', {
-    templateUrl : 'pages/land.html'
+    templateUrl : 'pages/land.html',
+    controller  : 'AuthTokenController'
   });
   $routeProvider.when('/webhook', {
     templateUrl : 'pages/webhook.html',

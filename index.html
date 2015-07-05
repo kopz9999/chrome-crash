@@ -27,14 +27,26 @@
     <script src="./vendor/bootstrap/js/bootstrap.min.js"></script>
     <script src="./vendor/gritter/js/jquery.gritter.min.js"></script>
     <script src="./vendor/jsonpath/jsonpath.js"></script>
-
-    <!-- Custom -->
+    <!--
+    <script src="./vendor/jquery-loading-overlay/loading-overlay.min.js"></script>
+    -->
+    <!--
+      @app: Chrome Crash
+    -->
     <script src="./js/lib/util.js"></script>
-    <script src="./js/controllers/chrome-crash.js"></script>
+    <script src="./js/chrome-crash.js"></script>
+    <!-- Concerns -->
+    <script src="./js/controllers/concerns/chrome-crash/authenticable.js"></script>
+    <!-- Controllers -->
     <script src="./js/controllers/chrome-crash/base-controller.js"></script>
     <script src="./js/controllers/chrome-crash/login-controller.js"></script>
     <script src="./js/controllers/chrome-crash/settings-controller.js"></script>
+    <script src="./js/controllers/chrome-crash/auth-token-controller.js"></script>
     <script src="./js/controllers/chrome-crash/webhook-controller.js"></script>
+    <!-- Directives -->
+    <script src="./js/directives/chrome-crash/crash-notifications.js"></script>
+    <script src="./js/directives/chrome-crash/crash-loader.js"></script>
+    <!-- Angular -->
     <script src="./js/app.js"></script>
     <script src="./js/routes.js"></script>
   </head>

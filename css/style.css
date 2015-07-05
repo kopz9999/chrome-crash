@@ -1,6 +1,6 @@
 body {
   width: 600px;
-  min-height: 300px;
+  min-height: 235px;
   padding-top: 10px;
   padding-bottom: 10px;
   background-color: #eee;
@@ -51,6 +51,32 @@ body {
 
 .form-group.has-error{
   margin-bottom: 0px;
+}
+
+.container .message-box {
+  padding-top: 15px;
+}
+
+.container .message-box .alert {
+  text-align: center;
+}
+
+.alert.alert-loading {
+  text-align: center;
+  background-color: #FFFFFF;
+  background-repeat: repeat-x;
+  border-color: #CCCCCC;
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+.alert.alert-loading span{
+  color:#999999;
+}
+
+.alert.alert-loading img.loader {
+  height: 30px;
+  margin-right: 10px;
 }
 
 .users-form .control-label {

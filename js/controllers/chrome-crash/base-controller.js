@@ -1,4 +1,5 @@
 var BaseController = function( $scope, $sharedData ) {
+  this.notifications = [];
   this._scope = $scope;
   this._sharedData = $sharedData;
   this._bindScope();
@@ -21,7 +22,22 @@ BaseController.prototype._loadSettings = function () {
   }
 };
 
-BaseController.prototype.getStorableData = function () {
+BaseController.prototype._onRequestError = function (status) {
+  if ( status < 600 && status >= 500 ){
+    this.displayErrorMessage('Server side error');
+  } else if (status < 500 && status >= 400) {
+    if (status == 401) {
+      this.displayErrorMessage('Unauthorized error.'+
+        ' Credentials are invalid');
+    } else this.displayErrorMessage('Client side occurred');
+  } else this.displayErrorMessage('Unknown error occurred');
+};
+
+BaseController.prototype._saveState = function () {
+  chrome.storage.sync.set(this._getStorableData());
+};
+
+BaseController.prototype._getStorableData = function () {
   var saveSetting = {};
   saveSetting[chromeCrashApp.storeKey] = this._sharedData;
   return saveSetting;
@@ -49,17 +65,11 @@ BaseController.prototype._bindScope = function () {
 };
 
 BaseController.prototype.displayFormErrorMessage = function () {
-  $.gritter.add({
-    title: chromeCrashApp.appTitle,
-    text: 'Please fill required fields'
-  });
+  this.notifications.push( 'Please fill required fields' );
 };
 
 BaseController.prototype.displayErrorMessage = function (error) {
-  $.gritter.add({
-    title: chromeCrashApp.appTitle,
-    text: error
-  });
+  this.notifications.push( error );
 };
 
 // Callbacks

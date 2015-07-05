@@ -1,3 +1,12 @@
 <div class="container">
-  <p> Loading ... </p>
+  <crash-notifications ng-model="notifications"></crash-notifications>
+  <div class="message-box">
+    <crash-loader ng-model="loading"></crash-loader>
+    <div ng-Show="success" class="alert alert-success" role="alert">
+      <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+      Content Sent
+    </div>
+    <button ng-Show="!success && !loading" type="submit" ng-click="processTab()" class="btn btn-lg btn-danger btn-block">Retry</button>
+    <button type="submit" ng-click="logout()" class="btn btn-lg btn-default btn-block">Logout</button>
+  </div>
 </div>
