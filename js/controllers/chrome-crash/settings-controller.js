@@ -57,7 +57,10 @@ SettingsController.prototype._onLoadSettingsFailure = function () {
 };
 
 SettingsController.prototype._onLoadSettingsSuccess = function(){
-  angular.extend(this._scope.setting, this._sharedData.setting);
+  var _self = this;
+  this._scope.$apply(function() {
+    angular.extend(_self._scope.setting, _self._sharedData.setting);
+  });
 };
 
 ChromeCrash.SettingsController = SettingsController;

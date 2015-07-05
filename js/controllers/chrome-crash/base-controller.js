@@ -70,6 +70,11 @@ BaseController.prototype._addNotification = function (error) {
   this._scope.notifications.push( error );
 };
 
+BaseController.prototype.showSettings = function() {
+  var settingsUrl = chrome.extension.getURL('settings.html');
+  chrome.tabs.create({'url': settingsUrl});
+};
+
 // Callbacks
 
 BaseController.prototype._onLoadSettingsSuccess = function(){

@@ -74,10 +74,14 @@ LoginController.prototype._displaySaveCredentialsSuccessMessage = function () {
 };
 
 LoginController.prototype._onLoadSettingsSuccess = function() {
+  var _self = null;
   this._loadedSettings = true;
   this._setting = this._sharedData.setting;
   if (this._sharedData.setting.rememberCredentials) {
-    angular.extend( this._scope.user, this._sharedData.user );
+    _self = this;
+    this._scope.$apply(function() {
+      angular.extend( _self._scope.user, _self._sharedData.user );
+    });
   }
   // You are already logged in
   if ( this._sharedData.authTokenHeaders != null ) {
@@ -87,11 +91,6 @@ LoginController.prototype._onLoadSettingsSuccess = function() {
 
 LoginController.prototype._onLoadSettingsFailure = function() {
   this.showSettings();
-};
-
-LoginController.prototype.showSettings = function() {
-  var settingsUrl = chrome.extension.getURL('settings.html');
-  chrome.tabs.create({'url': settingsUrl});
 };
 
 ChromeCrash.LoginController = LoginController;

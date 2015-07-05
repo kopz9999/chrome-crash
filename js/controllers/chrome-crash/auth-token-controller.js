@@ -16,6 +16,9 @@ AuthTokenController.prototype._initScope = function () {
   this._scope.logout = function(){
     _self.logout();
   };
+  this._scope.showSettings = function(){
+    _self.showSettings();
+  };
 };
 
 AuthTokenController.prototype.logout = function () {
