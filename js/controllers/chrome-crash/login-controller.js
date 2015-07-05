@@ -76,16 +76,18 @@ LoginController.prototype._displaySaveCredentialsSuccessMessage = function () {
 LoginController.prototype._onLoadSettingsSuccess = function() {
   var _self = null;
   this._loadedSettings = true;
-  this._setting = this._sharedData.setting;
-  if (this._sharedData.setting.rememberCredentials) {
-    _self = this;
-    this._scope.$apply(function() {
-      angular.extend( _self._scope.user, _self._sharedData.user );
-    });
-  }
   // You are already logged in
   if ( this._sharedData.authTokenHeaders != null ) {
     this._location.path('/webhook');
+  } else {
+    this._setting = this._sharedData.setting;
+    if (this._sharedData.setting.rememberCredentials) {
+      angular.extend( this._scope.user, this._sharedData.user );
+      var _self = this;
+      this._scope.$apply(function() {
+        angular.extend( _self._scope.user, _self._sharedData.user );
+      });
+    }
   }
 };
 

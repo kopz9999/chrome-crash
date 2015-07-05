@@ -47,7 +47,6 @@ WebhookController.prototype._analizeCurrentContent = function (domContent) {
   this._scope.loading = true;
   this._http(req).
     success(function(data, status, headers, config) {
-      _self._scope.loading = false;
       _self._onRequestSuccess();
     }).
     error(function(data, status, headers, config) {
@@ -56,7 +55,19 @@ WebhookController.prototype._analizeCurrentContent = function (domContent) {
 };
 
 WebhookController.prototype._onRequestSuccess = function () {
-  this._scope.success = true;
+  var _self = this;
+  // Due to UI Problems with large pages
+  setTimeout(function(){
+    _self._finishStatus();
+  }, 1000);
+};
+
+WebhookController.prototype._finishStatus = function () {
+  var _self = this;
+  this._scope.$apply(function(){
+    _self._scope.loading = false;
+    _self._scope.success = true;
+  });
 };
 
 WebhookController.prototype._processError = function (status) {
