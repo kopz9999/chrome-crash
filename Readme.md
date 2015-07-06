@@ -2,7 +2,7 @@
 
 Chrome extension to post current web page content into an authenticated
 Meteor endpoint that is acting as a Webhook. This extension assumes you are
-working with [Meteor][https://www.meteor.com/] and
+working with [Meteor](https://www.meteor.com/) and
 [Restivus](https://github.com/kahmali/meteor-restivus/).
 
 [Icon Source]: http://www.iconarchive.com/show/flat-icons-by-flat-icons.com/Meteor-icon.html
@@ -64,9 +64,11 @@ default configuration**
 
 In the first time or when you do not have a token, you will be prompted for
 Credentials:
+
 ![Credential Prompt](https://s3-us-west-2.amazonaws.com/kopz-projects/CodersClan/ChromeCrash/Screen+Shot+2015-07-06+at+03.09.21.png)
 
 After login, you can post current page content:
+
 ![Land](https://s3-us-west-2.amazonaws.com/kopz-projects/CodersClan/ChromeCrash/Screen+Shot+2015-07-06+at+03.11.19.png)
 
 ### Normal Usage
@@ -75,10 +77,14 @@ Just click on the icon of the extension to send current HTML content to the
 webhook:
 
 ![Click](https://s3-us-west-2.amazonaws.com/kopz-projects/CodersClan/ChromeCrash/Snip20150706_3.png)
+
+On clicking the extension icon:
+
 ![Loading](https://s3-us-west-2.amazonaws.com/kopz-projects/CodersClan/ChromeCrash/Screen+Shot+2015-07-06+at+03.14.36.png)
 
 In case of error on posting to the webhook, you will get the following screen
 where you can retry:
+
 ![Error](https://s3-us-west-2.amazonaws.com/kopz-projects/CodersClan/ChromeCrash/Screen+Shot+2015-07-06+at+03.16.50.png)
 
 ## Demos
